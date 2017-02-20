@@ -1,4 +1,6 @@
-# Cache Replacement Policy Testing Framework
+# Cache Replacement Policy Testing Framework 
+[![Build Status](https://travis-ci.org/ben-kimmel/caching.svg?branch=master)](https://travis-ci.org/ben-kimmel/caching)
+
 This repository houses a framework for testing various cache replacement policies.
 
 Upcoming Features
