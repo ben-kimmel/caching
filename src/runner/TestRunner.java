@@ -4,66 +4,44 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Random;
+import java.util.Enumeration;
 
 import cache.ICache;
 import cache.logging.LogEntry;
 
 public class TestRunner implements ITestRunner {
 
+	private Enumeration<? extends Integer> requestGenerator;
 	private ICache cache;
-	private int iterations;
-	private File outputFolder;
-	private int maxBlockID;
+	private long testDuration;
 
-	public TestRunner(ICache cache, int iterations, File outputFolder, int maxBlockID) {
-		this.setCacheImplementation(cache);
-		this.setIterations(iterations);
-		this.setOutputFolder(outputFolder);
-		this.setMaxBlockID(maxBlockID);
-		this.cache.enableLog(iterations);
-	}
-
-	private void setCacheImplementation(ICache cache) {
-		this.cache = cache;
-	}
-
-	private void setIterations(int iterations) {
-		this.iterations = iterations;
-	}
-
-	private void setOutputFolder(File outputFolder) {
-		this.outputFolder = outputFolder;
-	}
-
-	private void setMaxBlockID(int maxBlockID) {
-		this.maxBlockID = maxBlockID;
-
-	}
-
-	public void setCacheSize(int size) {
-		this.cache.setSize(size);
+	public TestRunner() {
+		this.requestGenerator = null;
+		this.cache = null;
 	}
 
 	@Override
-	public void run() {
-		Random r = new Random();
+	public void run(int iterations) {
 		long startTime = System.nanoTime();
-		for (int i = 0; i < this.iterations; i++) {
-			double rFactor = r.nextDouble();
-			int blockID = (int) Math.floor(this.maxBlockID * rFactor);
-			this.cache.requestBlock(blockID);
+		for (int i = 0; i < iterations; i++) {
+			this.cache.requestBlock(this.requestGenerator.nextElement());
 		}
 		long endTime = System.nanoTime();
 		long duration = endTime - startTime;
-		long durationMillis = duration / 1000000;
-		writeSummary(durationMillis);
-		writeLog();
-
+		this.testDuration = duration / 1000000;
 	}
 
-	private void writeLog() {
-		File logFile = new File(this.outputFolder.getAbsolutePath() + "/log.csv");
+	@Override
+	public void provideCache(ICache cache) {
+		this.cache = cache;
+	}
+
+	@Override
+	public void provideEnumerator(Enumeration<? extends Integer> requestGenerator) {
+		this.requestGenerator = requestGenerator;
+	}
+
+	public void writeLog(File logFile) {
 		BufferedWriter bw = null;
 		try {
 			bw = new BufferedWriter(new FileWriter(logFile));
@@ -84,15 +62,12 @@ public class TestRunner implements ITestRunner {
 		}
 	}
 
-	private void writeSummary(long durationMillis) {
-		File summaryFile = new File(this.outputFolder.getAbsolutePath() + "/summary.txt");
+	public void writeSummary(File summaryFile) {
 		BufferedWriter bw = null;
 		try {
 			bw = new BufferedWriter(new FileWriter(summaryFile));
 			bw.write(this.cache.generateSummaryReport());
-			bw.write("\nDuration of test: " + durationMillis + " milliseconds\n");
-			bw.write("Number of iterations: " + this.iterations + "\n");
-			bw.write("Max BlockID: " + this.maxBlockID + "\n");
+			bw.write("\nDuration of test: " + this.testDuration + " milliseconds\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {

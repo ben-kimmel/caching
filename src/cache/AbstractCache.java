@@ -16,8 +16,6 @@ public abstract class AbstractCache implements ICache {
 	private int conflictMisses;
 	private int size;
 
-	private boolean log;
-
 	private Set<Integer> allEntries;
 	protected Set<Integer> currentEntries;
 	private List<LogEntry> logEntries;
@@ -44,11 +42,9 @@ public abstract class AbstractCache implements ICache {
 			hit = true;
 		}
 		le = handleRequest(blockID);
-		if (log) {
-			le.setRequestNumber(this.requests);
-			le.setHitStatus(hs);
-			this.logEntries.add(le);
-		}
+		le.setRequestNumber(this.requests);
+		le.setHitStatus(hs);
+		this.logEntries.add(le);
 
 		return hit;
 	}
@@ -134,15 +130,6 @@ public abstract class AbstractCache implements ICache {
 		this.size = size;
 	}
 
-	public void enableLog(int size) {
-		this.log = true;
-		this.logEntries = new ArrayList<LogEntry>(size);
-	}
-
-	public void disableLog() {
-		this.log = false;
-	}
-
 	public void reset() {
 		this.requests = 0;
 		this.hits = 0;
@@ -150,7 +137,6 @@ public abstract class AbstractCache implements ICache {
 		this.insertions = 0;
 		this.compulsoryMisses = 0;
 		this.conflictMisses = 0;
-		this.disableLog();
 
 		this.allEntries = new HashSet<Integer>();
 		this.currentEntries = new HashSet<>();
@@ -159,6 +145,7 @@ public abstract class AbstractCache implements ICache {
 	public void reset(int size) {
 		this.reset();
 		this.setSize(size);
+		this.logEntries = new ArrayList<LogEntry>(size);
 	}
 
 	public String generateSummaryReport() {
@@ -175,7 +162,7 @@ public abstract class AbstractCache implements ICache {
 		return sb.toString();
 
 	}
-	
+
 	public List<LogEntry> getLog() {
 		return this.logEntries;
 	}

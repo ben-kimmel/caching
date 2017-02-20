@@ -32,12 +32,6 @@ public interface ICache {
 
 	public void reset();
 
-	public void reset(int size);
-
-	public void enableLog(int size);
-
-	public void disableLog();
-
 	// reporting
 	public String generateSummaryReport();
 	
