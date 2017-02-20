@@ -59,4 +59,12 @@ public class LogEntry {
 				+ ", forcedEviction=" + forcedEviction + ", forcedInsertion=" + forcedInsertion + "]";
 	}
 
+	public String toCSVEntry() {
+		return requestNumber + "," + blockID + "," + hitStatus + "," + forcedEviction + "," + forcedInsertion + "\n";
+	}
+
+	public static String getCSVHeaders() {
+		return "requestNumber,blockID,hitStatus,forcedEviction,forcedInsertion\n";
+	}
+
 }

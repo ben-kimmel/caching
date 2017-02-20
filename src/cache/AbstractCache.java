@@ -161,7 +161,7 @@ public abstract class AbstractCache implements ICache {
 		this.setSize(size);
 	}
 
-	public String generateReport() {
+	public String generateSummaryReport() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Summary:\n");
 		sb.append("===========================\n");

@@ -39,7 +39,7 @@ public interface ICache {
 	public void disableLog();
 
 	// reporting
-	public String generateReport();
+	public String generateSummaryReport();
 	
 	public List<LogEntry> getLog();
 
