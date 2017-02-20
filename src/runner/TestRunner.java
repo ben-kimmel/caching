@@ -20,7 +20,9 @@ public class TestRunner implements ITestRunner {
 		this.cache = null;
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void run(int iterations) {
 		long startTime = System.nanoTime();
 		for (int i = 0; i < iterations; i++) {
@@ -31,16 +33,23 @@ public class TestRunner implements ITestRunner {
 		this.testDuration = duration / 1000000;
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void provideCache(ICache cache) {
 		this.cache = cache;
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void provideEnumerator(Enumeration<? extends Integer> requestGenerator) {
 		this.requestGenerator = requestGenerator;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void writeLog(File logFile) {
 		BufferedWriter bw = null;
 		try {
@@ -62,6 +71,9 @@ public class TestRunner implements ITestRunner {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void writeSummary(File summaryFile) {
 		BufferedWriter bw = null;
 		try {

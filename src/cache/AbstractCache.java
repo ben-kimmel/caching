@@ -61,6 +61,10 @@ public abstract class AbstractCache implements ICache {
 		this.addEviction();
 	}
 
+	protected boolean isCacheFull() {
+		return this.currentEntries.size() >= this.size;
+	}
+
 	@Override
 	public int getRequests() {
 		return this.requests;
