@@ -1,6 +1,11 @@
 language: java
-gradle check
-gradle assemble
+
+jdk:
+  - oraclejdk8
+  
+script: 
+  - gradle check
+  - gradle assemble
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
