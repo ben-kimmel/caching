@@ -2,6 +2,7 @@ package runner;
 
 import java.io.File;
 
+import cache.implementations.LeastRecentlyUsedCache;
 import cache.implementations.MostRecentlyUsedCache;
 import cache.implementations.OldestEvictionCache;
 import runner.enumerators.DistributedRandomAccessEnumerator;
@@ -22,6 +23,13 @@ public class ExampleDriver {
 		tr2.run(1000000);
 		tr2.writeLog(new File("output/MRU-log.csv"));
 		tr2.writeSummary(new File("output/MRU-summary.txt"));
+
+		ITestRunner tr3 = new TestRunner();
+		tr3.provideCache(new LeastRecentlyUsedCache(1000));
+		tr3.provideEnumerator(new DistributedRandomAccessEnumerator(0, 100000));
+		tr3.run(1000000);
+		tr3.writeLog(new File("output/LRU-log.csv"));
+		tr3.writeSummary(new File("output/LRU-summary.txt"));
 	}
 
 }

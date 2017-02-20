@@ -16,4 +16,9 @@ hs_err_pid*
 *.csv
 
 # Eclipse files
-.*
+.classpath
+.project
+.settings/*
+.gradle/*
+
+build/*
