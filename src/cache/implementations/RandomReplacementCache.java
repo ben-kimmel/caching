@@ -1,7 +1,6 @@
 package cache.implementations;
 
 import java.util.Random;
-import java.util.Set;
 
 import cache.AbstractCache;
 import cache.logging.LogEntry;
@@ -15,9 +14,9 @@ public class RandomReplacementCache extends AbstractCache {
 
 	public RandomReplacementCache(int size) {
 		super(size);
-		r = new Random();
-		index = new Integer[size];
-		buildIndex = 0;
+		this.r = new Random();
+		this.index = new Integer[size];
+		this.buildIndex = 0;
 	}
 
 	@Override
@@ -27,15 +26,15 @@ public class RandomReplacementCache extends AbstractCache {
 		if (!super.currentEntries.contains(blockID)) {
 			if (!super.isCacheFull()) {
 				super.addToCache(blockID);
-				index[buildIndex] = blockID;
-				buildIndex++;
+				this.index[this.buildIndex] = blockID;
+				this.buildIndex++;
 				lb.setForcedEviction(false).setForcedInsertion(true);
 			} else {
-				int randomIndex = r.nextInt(index.length);
-				int remove = index[randomIndex];
+				int randomIndex = this.r.nextInt(this.index.length);
+				int remove = this.index[randomIndex];
 				super.removeFromCache(remove);
 				super.addToCache(blockID);
-				index[randomIndex] = blockID;
+				this.index[randomIndex] = blockID;
 				lb.setForcedEviction(true).setForcedInsertion(true);
 			}
 		} else {
