@@ -1,19 +1,23 @@
 package cache.implementations;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Random;
+import java.util.Set;
 
 import cache.AbstractCache;
 import cache.logging.LogEntry;
 import cache.logging.LogEntryBuilder;
 
-public class OldestEvictionCache extends AbstractCache {
+public class RandomReplacementCache extends AbstractCache {
 
-	private Queue<Integer> ageQueue;
+	private Random r;
+	private Integer[] index;
+	private int buildIndex;
 
-	public OldestEvictionCache(int size) {
+	public RandomReplacementCache(int size) {
 		super(size);
-		this.ageQueue = new LinkedList<Integer>();
+		r = new Random();
+		index = new Integer[size];
+		buildIndex = 0;
 	}
 
 	@Override
@@ -21,14 +25,17 @@ public class OldestEvictionCache extends AbstractCache {
 		LogEntryBuilder lb = new LogEntryBuilder();
 		lb.setBlockID(blockID);
 		if (!super.currentEntries.contains(blockID)) {
-			if (this.ageQueue.size() < super.getSize()) {
-				this.ageQueue.add(blockID);
+			if (!super.isCacheFull()) {
 				super.addToCache(blockID);
+				index[buildIndex] = blockID;
+				buildIndex++;
 				lb.setForcedEviction(false).setForcedInsertion(true);
 			} else {
-				int oldest = this.ageQueue.poll();
-				super.removeFromCache(oldest);
+				int randomIndex = r.nextInt(index.length);
+				int remove = index[randomIndex];
+				super.removeFromCache(remove);
 				super.addToCache(blockID);
+				index[randomIndex] = blockID;
 				lb.setForcedEviction(true).setForcedInsertion(true);
 			}
 		} else {

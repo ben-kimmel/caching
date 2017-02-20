@@ -1,35 +1,46 @@
 package runner;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
+import cache.ICache;
+import cache.implementations.FIFOCache;
+import cache.implementations.LIFOCache;
 import cache.implementations.LeastRecentlyUsedCache;
 import cache.implementations.MostRecentlyUsedCache;
-import cache.implementations.OldestEvictionCache;
+import cache.implementations.RandomReplacementCache;
 import runner.enumerators.DistributedRandomAccessEnumerator;
 
 public class ExampleDriver {
 
+	private static Map<ICache, String[]> caches;
+
 	public static void main(String[] args) {
-		ITestRunner tr = new TestRunner();
-		tr.provideCache(new OldestEvictionCache(1000));
-		tr.provideEnumerator(new DistributedRandomAccessEnumerator(0, 100000));
-		tr.run(1000000);
-		tr.writeLog(new File("output/OEC-log.csv"));
-		tr.writeSummary(new File("output/OEC-summary.txt"));
+		setup();
 
-		ITestRunner tr2 = new TestRunner();
-		tr2.provideCache(new MostRecentlyUsedCache(1000));
-		tr2.provideEnumerator(new DistributedRandomAccessEnumerator(0, 100000));
-		tr2.run(1000000);
-		tr2.writeLog(new File("output/MRU-log.csv"));
-		tr2.writeSummary(new File("output/MRU-summary.txt"));
+		for (ICache cache : caches.keySet()) {
+			ITestRunner tr = new TestRunner();
+			tr.provideCache(cache);
+			tr.provideEnumerator(new DistributedRandomAccessEnumerator(0, 100000));
+			tr.run(1000000);
+			tr.writeLog(new File(caches.get(cache)[0]));
+			tr.writeSummary(new File(caches.get(cache)[1]));
+		}
+		System.out.println("Finished Trials");
+	}
 
-		ITestRunner tr3 = new TestRunner();
-		tr3.provideCache(new LeastRecentlyUsedCache(1000));
-		tr3.provideEnumerator(new DistributedRandomAccessEnumerator(0, 100000));
-		tr3.run(1000000);
-		tr3.writeLog(new File("output/LRU-log.csv"));
-		tr3.writeSummary(new File("output/LRU-summary.txt"));
+	private static void setup() {
+		caches = new HashMap<ICache, String[]>();
+		caches.put((ICache) new FIFOCache(1000), new String[] { "output/FIFO-log.csv", "output/FIFO-summary.txt" });
+		caches.put((ICache) new LIFOCache(1000), new String[] { "output/LIFO-log.csv", "output/LIFO-summary.txt" });
+		caches.put((ICache) new MostRecentlyUsedCache(1000),
+				new String[] { "output/MRU-log.csv", "output/MRU-summary.txt" });
+		caches.put((ICache) new LeastRecentlyUsedCache(1000),
+				new String[] { "output/LRU-log.csv", "output/LRU-summary.txt" });
+		caches.put((ICache) new RandomReplacementCache(1000),
+				new String[] { "output/RR-log.csv", "output/RR-summary.txt" });
+
 	}
 
 }
