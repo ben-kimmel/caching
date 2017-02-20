@@ -14,3 +14,6 @@ hs_err_pid*
 # Output Files
 *.txt
 *.csv
+
+# Eclipse files
+.*
