@@ -22,13 +22,7 @@ public class TestDistrubutedRandomAccessEnumerator {
 	public void testHasMoreElement() {
 		for (int i = 0; i < 1000; i++) {
 			assertTrue(this.e.hasMoreElements());
-		}
-	}
-
-	@Test
-	public void testProducesIntegers() {
-		for (int i = 0; i < 1000; i++) {
-			assertTrue(this.e.nextElement().getClass().isAssignableFrom(Integer.class));
+			this.e.nextElement();
 		}
 	}
 	
