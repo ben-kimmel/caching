@@ -11,3 +11,4 @@ Upcoming Features
   4. Support for custom logging
   5. Additional unit tests
   6. Documentation
+  7. Code coverage information
