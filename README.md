@@ -9,3 +9,5 @@ Upcoming Features
   2. Additional cache replacement policy implementations
   3. Additional request enumerators
   4. Support for custom logging
+  5. Additional unit tests
+  6. Documentation
