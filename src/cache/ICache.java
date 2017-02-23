@@ -26,6 +26,8 @@ public interface ICache {
 
 	// requests
 	public boolean requestBlock(int blockID);
+	
+	public boolean softRequest(int blockID);
 
 	// setup
 	public void setSize(int size);

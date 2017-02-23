@@ -49,6 +49,11 @@ public abstract class AbstractCache implements ICache {
 		return hit;
 	}
 
+	@Override
+	public boolean softRequest(int blockID) {
+		return this.currentEntries.contains(blockID);
+	}
+
 	abstract protected LogEntry handleRequest(int blockID);
 
 	protected void addToCache(int blockID) {
