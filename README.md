@@ -5,7 +5,10 @@ This repository houses a framework for testing various cache replacement policie
 
 Upcoming Features
 -
-  1. Gradle support for CI testing and with that unit tests
+  1. ~~Travis CI testing and Gradle builds~~
   2. Additional cache replacement policy implementations
   3. Additional request enumerators
   4. Support for custom logging
+  5. Additional unit tests
+  6. Documentation
+  7. Code coverage information
