@@ -12,3 +12,5 @@ Upcoming Features
   5. Additional unit tests
   6. Documentation
   7. Code coverage information
+  8. Prefetching
+  9. Visualizations (Maybe as separate project)
