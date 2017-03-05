@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import cache.AbstractCacheStep;
+import cache.internal.CacheFullException;
 import cache.internal.ICacheInternal;
 import cache.logging.DefaultLogEntryBuilder;
 import cache.logging.LogEntry;
@@ -24,12 +25,20 @@ public class FIFOReplacementPolicy extends AbstractCacheStep implements IReplace
 		if (!cache.contains(blockID)) {
 			if (!cache.isFull()) {
 				this.ageQueue.add(blockID);
-				cache.addToCache(blockID);
+				try {
+					cache.addToCache(blockID);
+				} catch (CacheFullException e) {
+					e.printStackTrace();
+				}
 				dlb.addForcedEviction(false).addForcedInsertion(true);
 			} else {
 				int oldest = this.ageQueue.poll();
 				cache.removeFromCache(oldest);
-				cache.addToCache(blockID);
+				try {
+					cache.addToCache(blockID);
+				} catch (CacheFullException e) {
+					e.printStackTrace();
+				}
 				this.ageQueue.add(blockID);
 				dlb.addForcedEviction(true).addForcedInsertion(true);
 			}

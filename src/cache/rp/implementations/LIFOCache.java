@@ -3,6 +3,7 @@ package cache.rp.implementations;
 import java.util.Stack;
 
 import cache.AbstractCacheStep;
+import cache.internal.CacheFullException;
 import cache.internal.ICacheInternal;
 import cache.logging.DefaultLogEntryBuilder;
 import cache.logging.LogEntry;
@@ -23,13 +24,21 @@ public class LIFOCache extends AbstractCacheStep implements IReplacementPolicy {
 		if (!cache.contains(blockID)) {
 			if (!cache.isFull()) {
 				this.s.push(blockID);
-				cache.addToCache(blockID);
+				try {
+					cache.addToCache(blockID);
+				} catch (CacheFullException e) {
+					e.printStackTrace();
+				}
 				lb.addForcedEviction(false).addForcedInsertion(true);
 			} else {
 				int newest = this.s.pop();
 				s.push(blockID);
 				cache.removeFromCache(newest);
-				cache.addToCache(blockID);
+				try {
+					cache.addToCache(blockID);
+				} catch (CacheFullException e) {
+					e.printStackTrace();
+				}
 				lb.addForcedEviction(true).addForcedInsertion(true);
 			}
 		} else {

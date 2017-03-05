@@ -1,6 +1,7 @@
 package cache.rp.implementations;
 
 import cache.AbstractCacheStep;
+import cache.internal.CacheFullException;
 import cache.internal.ICacheInternal;
 import cache.logging.DefaultLogEntryBuilder;
 import cache.logging.LogEntry;
@@ -22,12 +23,20 @@ public class LRUReplacementPolicy extends AbstractCacheStep implements IReplacem
 		if (!cache.contains(blockID)) {
 			if (!cache.isFull()) {
 				this.q.add(blockID);
-				cache.addToCache(blockID);
+				try {
+					cache.addToCache(blockID);
+				} catch (CacheFullException e) {
+					e.printStackTrace();
+				}
 				lb.addForcedEviction(false).addForcedInsertion(true);
 			} else {
 				int oldest = this.q.poll();
 				cache.removeFromCache(oldest);
-				cache.addToCache(blockID);
+				try {
+					cache.addToCache(blockID);
+				} catch (CacheFullException e) {
+					e.printStackTrace();
+				}
 				lb.addForcedEviction(true).addForcedInsertion(true);
 			}
 		} else {

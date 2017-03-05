@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import cache.AbstractCacheStep;
+import cache.internal.CacheFullException;
 import cache.internal.ICacheInternal;
 import cache.logging.DefaultLogEntryBuilder;
 import cache.logging.LogEntry;
@@ -25,14 +26,22 @@ public class RandomReplacementPolicy extends AbstractCacheStep implements IRepla
 		DefaultLogEntryBuilder lb = new DefaultLogEntryBuilder(le);
 		if (!cache.contains(blockID)) {
 			if (!cache.isFull()) {
-				cache.addToCache(blockID);
+				try {
+					cache.addToCache(blockID);
+				} catch (CacheFullException e) {
+					e.printStackTrace();
+				}
 				this.index.add(blockID);
 				lb.addForcedEviction(false).addForcedInsertion(true);
 			} else {
 				int randomIndex = this.r.nextInt(this.index.size());
 				int remove = this.index.remove(randomIndex);
 				cache.removeFromCache(remove);
-				cache.addToCache(blockID);
+				try {
+					cache.addToCache(blockID);
+				} catch (CacheFullException e) {
+					e.printStackTrace();
+				}
 				this.index.add(blockID);
 				lb.addForcedEviction(true).addForcedInsertion(true);
 			}
