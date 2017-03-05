@@ -9,6 +9,13 @@ import cache.internal.ICacheInternal;
 import cache.logging.DefaultLogEntryBuilder;
 import cache.logging.LogEntry;
 
+/**
+ * An abstraction of the {@link ICacheWrapper} interface. Handles all methods of
+ * ICacheWrapper.
+ * 
+ * @author Ben Kimmel
+ *
+ */
 public abstract class AbstractCacheWrapper implements ICacheWrapper {
 
 	private ICacheInternal cache;
@@ -17,6 +24,9 @@ public abstract class AbstractCacheWrapper implements ICacheWrapper {
 	private List<ICacheStep> cacheSteps;
 	private List<LogEntry> logEntries;
 
+	/**
+	 * Initializes an AbstractCacheWrapper.
+	 */
 	public AbstractCacheWrapper() {
 		this.cacheSteps = new ArrayList<ICacheStep>();
 		this.logEntries = new LinkedList<LogEntry>();
@@ -32,11 +42,6 @@ public abstract class AbstractCacheWrapper implements ICacheWrapper {
 		HitStatus hs = HitStatus.HIT;
 		LogEntry le = new LogEntry();
 		if (!cache.hasSeen(blockID)) {
-			// TODO: Determine if cache should add this
-			// block to seen blocks automatically
-			// I.E. is it a compulsory miss if it has
-			// been requested, but never added to the
-			// cache? currently no.
 			hs = HitStatus.COMPULSORY_MISS;
 		} else if (!cache.contains(blockID)) {
 			hs = HitStatus.CONFLICT_MISS;
@@ -54,6 +59,8 @@ public abstract class AbstractCacheWrapper implements ICacheWrapper {
 		return hit;
 	}
 
+	// due to the implementation of the cache steps, they are unordered until
+	// they are finalized, which puts them into order based on their priority.
 	private void finalizeSteps() {
 		Collections.sort(this.cacheSteps);
 		this.stepsFinalized = true;

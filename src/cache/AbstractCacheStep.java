@@ -1,9 +1,23 @@
 package cache;
 
+/**
+ * An abstraction of the {@link ICacheStep} interface. Encompasses all
+ * aspects of priority handling.
+ * 
+ * @author Ben Kimmel
+ *
+ */
 public abstract class AbstractCacheStep implements ICacheStep {
 
 	int priority;
 
+	/**
+	 * Constructor for the AbstractCacheStep that requires the priority at
+	 * initialization.
+	 * 
+	 * @param priority
+	 *            The priority of the AbstractCacheStep. Lower is sooner
+	 */
 	public AbstractCacheStep(int priority) {
 		this.setPriority(priority);
 	}
