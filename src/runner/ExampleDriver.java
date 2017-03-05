@@ -4,44 +4,41 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import cache.ICache;
-import cache.implementations.FIFOCache;
-import cache.implementations.LIFOCache;
-import cache.implementations.LeastRecentlyUsedCache;
-import cache.implementations.MostRecentlyUsedCache;
-import cache.implementations.RandomReplacementCache;
-import runner.enumerators.DistributedRandomAccessEnumerator;
+import cache.DefaultCacheWrapper;
+import cache.ICacheWrapper;
+import cache.logging.writers.CSVLogWriter;
+import cache.logging.writers.ILogWriter;
+import cache.rp.implementations.FIFOReplacementPolicy;
 import runner.enumerators.SequentialBlockAccessEnumerator;
 
 public class ExampleDriver {
 
-	private static Map<ICache, String[]> caches;
+	private static Map<ICacheWrapper, ILogWriter> caches;
 
 	public static void main(String[] args) {
 		setup();
 
-		for (ICache cache : caches.keySet()) {
+		for (ICacheWrapper cache : caches.keySet()) {
 			ITestRunner tr = new TestRunner();
-			tr.provideCache(cache);
+			tr.provideCacheWrapper(cache);
 			tr.provideEnumerator(new SequentialBlockAccessEnumerator(0, 100000, 1000, 2));
+			tr.provideLogWriter(caches.get(cache));
 			tr.run(1000000);
-			tr.writeLog(new File(caches.get(cache)[0]));
-			tr.writeSummary(new File(caches.get(cache)[1]));
 		}
 		System.out.println("Finished Trials");
 	}
 
 	private static void setup() {
-		caches = new HashMap<ICache, String[]>();
-		caches.put((ICache) new FIFOCache(1000), new String[] { "output/FIFO-log-block.csv", "output/FIFO-summary-block.txt" });
-		caches.put((ICache) new LIFOCache(1000), new String[] { "output/LIFO-log-block.csv", "output/LIFO-summary-block.txt" });
-		caches.put((ICache) new MostRecentlyUsedCache(1000),
-				new String[] { "output/MRU-log-block.csv", "output/MRU-summary-block.txt" });
-		caches.put((ICache) new LeastRecentlyUsedCache(1000),
-				new String[] { "output/LRU-log-block.csv", "output/LRU-summary-block.txt" });
-		caches.put((ICache) new RandomReplacementCache(1000),
-				new String[] { "output/RR-log-block.csv", "output/RR-summary-block.txt" });
+		caches = new HashMap<ICacheWrapper, ILogWriter>();
 
+		caches.put(buildCacheWrapper(), new CSVLogWriter(new File("output/out.txt")));
+
+	}
+
+	private static ICacheWrapper buildCacheWrapper() {
+		ICacheWrapper wrapper = new DefaultCacheWrapper(100, false);
+		wrapper.provideCacheStep(new FIFOReplacementPolicy(0));
+		return wrapper;
 	}
 
 }

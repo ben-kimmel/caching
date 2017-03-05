@@ -1,70 +1,37 @@
 package cache.logging;
 
-import cache.HitStatus;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class LogEntry {
 
-	private int blockID;
-	private HitStatus hitStatus;
-	private int requestNumber;
-	private boolean forcedEviction;
-	private boolean forcedInsertion;
+	@SuppressWarnings("rawtypes")
+	private Map<String, Class> fieldTypes;
+	private Map<String, Object> fieldValues;
 
+	@SuppressWarnings("rawtypes")
 	public LogEntry() {
+		this.fieldTypes = new HashMap<String, Class>();
+		this.fieldValues = new HashMap<String, Object>();
 	}
 
-	public int getBlockID() {
-		return blockID;
+	public void addField(String field, Object value) {
+		this.fieldTypes.put(field, value.getClass());
+		this.fieldValues.put(field, value);
 	}
 
-	public void setBlockID(int blockID) {
-		this.blockID = blockID;
+	public Set<String> getFieldList() {
+		return this.fieldValues.keySet();
 	}
 
-	public HitStatus getHitStatus() {
-		return hitStatus;
+	public Object getFieldValue(String field) {
+		return this.fieldValues.get(field);
 	}
 
-	public void setHitStatus(HitStatus hitStatus) {
-		this.hitStatus = hitStatus;
-	}
-
-	public int getRequestNumber() {
-		return requestNumber;
-	}
-
-	public void setRequestNumber(int requestNumber) {
-		this.requestNumber = requestNumber;
-	}
-
-	public boolean isForcedEviction() {
-		return forcedEviction;
-	}
-
-	public void setForcedEviction(boolean forcedEviction) {
-		this.forcedEviction = forcedEviction;
-	}
-
-	public boolean isForcedInsertion() {
-		return forcedInsertion;
-	}
-
-	public void setForcedInsertion(boolean forcedInsertion) {
-		this.forcedInsertion = forcedInsertion;
-	}
-
-	@Override
-	public String toString() {
-		return "LogEntry [blockID=" + blockID + ", hitStatus=" + hitStatus + ", requestNumber=" + requestNumber
-				+ ", forcedEviction=" + forcedEviction + ", forcedInsertion=" + forcedInsertion + "]";
-	}
-
-	public String toCSVEntry() {
-		return requestNumber + "," + blockID + "," + hitStatus + "," + forcedEviction + "," + forcedInsertion + "\n";
-	}
-
-	public static String getCSVHeaders() {
-		return "requestNumber,blockID,hitStatus,forcedEviction,forcedInsertion\n";
+	@SuppressWarnings("rawtypes")
+	public Class getFieldType(String field) {
+		return this.fieldTypes.get(field);
 	}
 
 }

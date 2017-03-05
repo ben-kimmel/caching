@@ -1,28 +1,29 @@
 package runner;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
 
-import cache.ICache;
-import cache.logging.LogEntry;
+import cache.ICacheWrapper;
+import cache.logging.writers.ILogWriter;
 
 public class TestRunner implements ITestRunner {
 
 	private Enumeration<? extends Integer> requestGenerator;
-	private ICache cache;
+	private List<ILogWriter> logWriters;
+	private ICacheWrapper cache;
 	private long testDuration;
 
 	public TestRunner() {
 		this.requestGenerator = null;
 		this.cache = null;
+		this.logWriters = new LinkedList<>();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void run(int iterations) {
 		long startTime = System.nanoTime();
 		for (int i = 0; i < iterations; i++) {
@@ -31,18 +32,24 @@ public class TestRunner implements ITestRunner {
 		long endTime = System.nanoTime();
 		long duration = endTime - startTime;
 		this.testDuration = duration / 1000000;
+		System.out.println("Test Duration: " + this.testDuration);
+		for (ILogWriter lw : this.logWriters) {
+			lw.writeLog(cache.getLog());
+		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void provideCache(ICache cache) {
+	@Override
+	public void provideCacheWrapper(ICacheWrapper cache) {
 		this.cache = cache;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void provideEnumerator(Enumeration<? extends Integer> requestGenerator) {
 		this.requestGenerator = requestGenerator;
 	}
@@ -50,47 +57,9 @@ public class TestRunner implements ITestRunner {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void writeLog(File logFile) {
-		BufferedWriter bw = null;
-		try {
-			bw = new BufferedWriter(new FileWriter(logFile));
-			bw.write(LogEntry.getCSVHeaders());
-			for (LogEntry le : this.cache.getLog()) {
-				bw.write(le.toCSVEntry());
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (bw != null) {
-					bw.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void writeSummary(File summaryFile) {
-		BufferedWriter bw = null;
-		try {
-			bw = new BufferedWriter(new FileWriter(summaryFile));
-			bw.write(this.cache.generateSummaryReport());
-			bw.write("\nDuration of test: " + this.testDuration + " milliseconds\n");
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (bw != null) {
-					bw.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+	@Override
+	public void provideLogWriter(ILogWriter writer) {
+		this.logWriters.add(writer);
 	}
 
 }

@@ -1,26 +1,34 @@
 package cache.logging.writers;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import cache.logging.ILogLine;
+import cache.logging.LogEntry;
 
 public class CSVLogWriter extends AbstractLogWriter {
 
-	private String generateCSVEntry(ILogLine line) {
-		StringBuilder sb = new StringBuilder();
+	public CSVLogWriter(File outputFile) {
+		super(outputFile);
+	}
 
+	private String generateCSVEntry(LogEntry line) {
+		StringBuilder sb = new StringBuilder();
+		for (String header : line.getFieldList()) {
+			sb.append(line.getFieldValue(header));
+			sb.append(",");
+		}
 		return sb.toString();
 	}
 
 	@Override
-	protected void writeLog(List<ILogLine> logLines) {
+	protected void writeLogEntries(List<LogEntry> logLines) {
 		try {
 			super.writeln(generateHeaders(logLines.get(0)));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		for (ILogLine line : logLines) {
+		for (LogEntry line : logLines) {
 			String outputLine = generateCSVEntry(line);
 			try {
 				super.writeln(outputLine);
@@ -31,9 +39,13 @@ public class CSVLogWriter extends AbstractLogWriter {
 
 	}
 
-	private String generateHeaders(ILogLine iLogLine) {
-		// TODO Auto-generated method stub
-		return null;
+	private String generateHeaders(LogEntry line) {
+		StringBuilder sb = new StringBuilder();
+		for (String header : line.getFieldList()) {
+			sb.append(header);
+			sb.append(",");
+		}
+		return sb.toString();
 	}
 
 }

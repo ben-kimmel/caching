@@ -6,11 +6,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import cache.logging.ILogLine;
+import cache.logging.LogEntry;
 
 public abstract class AbstractLogWriter implements ILogWriter {
 
 	private BufferedWriter bw;
+	private File outputFile;
+
+	public AbstractLogWriter(File outputFile) {
+		this.setOutputFile(outputFile);
+	}
+
+	@Override
+	public void setOutputFile(File outputFile) {
+		this.outputFile = outputFile;
+	}
 
 	protected void setupWriter(File outputFile) throws IOException {
 		this.bw = new BufferedWriter(new FileWriter(outputFile));
@@ -32,10 +42,10 @@ public abstract class AbstractLogWriter implements ILogWriter {
 	}
 
 	@Override
-	public void writeLog(List<ILogLine> logLines, File outputFile) {
+	public void writeLog(List<LogEntry> logLines) {
 		try {
 			setupWriter(outputFile);
-			writeLog(logLines);
+			writeLogEntries(logLines);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -44,5 +54,5 @@ public abstract class AbstractLogWriter implements ILogWriter {
 
 	}
 
-	protected abstract void writeLog(List<ILogLine> logLines);
+	protected abstract void writeLogEntries(List<LogEntry> logLines);
 }

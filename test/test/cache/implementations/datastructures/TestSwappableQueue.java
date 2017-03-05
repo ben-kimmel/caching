@@ -9,27 +9,32 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
+import cache.rp.implementations.datastructures.SwappableSetQueue;
+
 public class TestSwappableQueue {
 
-	private cache.implementations.datastructures.SwappableQueue q;
+	private SwappableSetQueue<Integer> q;
 
 	@Before
 	public void setUp() throws Exception {
-		this.q = new cache.implementations.datastructures.SwappableQueue(10);
+		this.q = new SwappableSetQueue<Integer>(10);
+		for(int i = 0; i < 10; i++) {
+			q.add(i);
+		}
 	}
 
 	@Test
 	public void testPopTailInitial() {
-		for (int i = 0; i < 10; i++) {
-			assertEquals(i, q.popTail());
+		for (Integer i = 0; i < 10; i++) {
+			assertEquals(i, q.poll());
 		}
 	}
 
 	@Test
 	public void testExtraPops() {
-		int[] expected = { 0, 0, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+		Integer[] expected = { null, null, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
 		for (int i = 11; i >= 0; i--) {
-			assertEquals(expected[i], q.popTail());
+			assertEquals(expected[i], q.poll());
 		}
 	}
 
@@ -38,9 +43,9 @@ public class TestSwappableQueue {
 		q.moveToHead(2);
 		q.moveToHead(7);
 		q.moveToHead(8);
-		int[] expected = { 8, 7, 2, 9, 6, 5, 4, 3, 1, 0 };
+		Integer[] expected = { 8, 7, 2, 9, 6, 5, 4, 3, 1, 0 };
 		for (int i = 9; i >= 0; i--) {
-			assertEquals(expected[i], q.popTail());
+			assertEquals(expected[i], q.poll());
 		}
 	}
 
@@ -49,8 +54,8 @@ public class TestSwappableQueue {
 		q.moveToHead(12);
 		q.moveToHead(7222);
 		q.moveToHead(82431234);
-		for (int i = 0; i < 10; i++) {
-			assertEquals(i, q.popTail());
+		for (Integer i = 0; i < 10; i++) {
+			assertEquals(i, q.poll());
 		}
 	}
 
@@ -67,7 +72,7 @@ public class TestSwappableQueue {
 	public void testToArrayListEmpty() {
 		ArrayList<Integer> expected = new ArrayList<Integer>();
 		for (int i = 0; i < 20; i++) {
-			this.q.popTail();
+			this.q.poll();
 		}
 		assertEquals(expected, q.toArrayList());
 	}
