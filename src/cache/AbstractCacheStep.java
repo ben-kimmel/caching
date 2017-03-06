@@ -1,8 +1,8 @@
 package cache;
 
 /**
- * An abstraction of the {@link ICacheStep} interface. Encompasses all
- * aspects of priority handling.
+ * An abstraction of the {@link ICacheStep} interface. Encompasses all aspects
+ * of priority handling.
  * 
  * @author Ben Kimmel
  *
@@ -12,8 +12,8 @@ public abstract class AbstractCacheStep implements ICacheStep {
 	int priority;
 
 	/**
-	 * Constructor for the AbstractCacheStep that requires the priority at
-	 * initialization.
+	 * Initializes an AbstractCacheStep with the given priority. The lower the
+	 * priority number, the sooner it executes.
 	 * 
 	 * @param priority
 	 *            The priority of the AbstractCacheStep. Lower is sooner
