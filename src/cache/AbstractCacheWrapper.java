@@ -54,7 +54,7 @@ public abstract class AbstractCacheWrapper implements ICacheWrapper {
 		DefaultLogEntryBuilder lb = new DefaultLogEntryBuilder(le);
 		lb.addBlockID(blockID);
 		lb.addHitStatus(hs);
-		lb.addRequests(this.logEntries.size());
+		lb.addRequest(this.logEntries.size());
 		this.logEntries.add(lb.build());
 		return hit;
 	}
