@@ -19,6 +19,9 @@ public class DefaultLogEntryBuilder extends AbstractLogEntryBuilder {
 
 	/**
 	 * Constructs a new DefaultLogEntryBuilder with the given {@link LogEntry}.
+	 *
+	 * @param le
+	 *            The LogEntry to build from
 	 */
 	public DefaultLogEntryBuilder(LogEntry le) {
 		super(le);
@@ -84,7 +87,7 @@ public class DefaultLogEntryBuilder extends AbstractLogEntryBuilder {
 	 * Adds the field 'Forced Insertion?' to the {@link LogEntry} with the
 	 * specified value.
 	 * 
-	 * @param forcedEviction
+	 * @param forcedInsertion
 	 *            Whether the request forced an insertion
 	 * @return A DefaultLogEntryBuilder that reflects changes made by this
 	 *         method

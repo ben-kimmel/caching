@@ -22,6 +22,7 @@ public abstract class AbstractLogEntryBuilder implements ILogEntryBuilder {
 	 * Initializes an AbstractLogEntryBuilder with the given {@link LogEntry}.
 	 * 
 	 * @param le
+	 *            The LogEntry to build from
 	 */
 	public AbstractLogEntryBuilder(LogEntry le) {
 		this.le = le;

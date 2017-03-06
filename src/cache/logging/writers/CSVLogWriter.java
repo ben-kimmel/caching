@@ -6,8 +6,20 @@ import java.util.List;
 
 import cache.logging.LogEntry;
 
+/**
+ * An {@link ILogWriter} implementation that outputs the log as a CSV file.
+ * 
+ * @author Ben Kimmel
+ *
+ */
 public class CSVLogWriter extends AbstractLogWriter {
 
+	/**
+	 * Constructs a new CSVLogWriter with the specified destination file.
+	 * 
+	 * @param outputFile
+	 *            The File specifying where the output should be written
+	 */
 	public CSVLogWriter(File outputFile) {
 		super(outputFile);
 	}

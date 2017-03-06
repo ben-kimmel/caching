@@ -1,5 +1,6 @@
 package cache;
 
+import cache.internal.ICacheInternal;
 import cache.internal.implementations.DefaultCacheInternalImplementation;
 import cache.pf.implementations.DefaultPrefetchingPolicy;
 import cache.rp.implementations.DefaultReplacementPolicy;

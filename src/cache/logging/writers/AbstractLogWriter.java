@@ -8,11 +8,25 @@ import java.util.List;
 
 import cache.logging.LogEntry;
 
+/**
+ * An abstraction of the {@link ILogWriter} interface. AbstractLogWriter handles
+ * all {@link File} I/O and delegates log processing to implementing classes.
+ * 
+ * @author Ben Kimmel
+ *
+ */
 public abstract class AbstractLogWriter implements ILogWriter {
 
 	private BufferedWriter bw;
 	private File outputFile;
 
+	/**
+	 * Initializes an AbstractLogWriter with the given {@link File} as the
+	 * output file.
+	 * 
+	 * @param outputFile
+	 *            The File specifying where the output should be written
+	 */
 	public AbstractLogWriter(File outputFile) {
 		this.setOutputFile(outputFile);
 	}
@@ -22,11 +36,11 @@ public abstract class AbstractLogWriter implements ILogWriter {
 		this.outputFile = outputFile;
 	}
 
-	protected void setupWriter(File outputFile) throws IOException {
+	private void setupWriter(File outputFile) throws IOException {
 		this.bw = new BufferedWriter(new FileWriter(outputFile));
 	}
 
-	protected void tearDownWriter() {
+	private void tearDownWriter() {
 		try {
 			if (bw != null) {
 				bw.close();
@@ -36,6 +50,15 @@ public abstract class AbstractLogWriter implements ILogWriter {
 		}
 	}
 
+	/**
+	 * Writes the given {@link String} to the AbstractLogWriter's given output
+	 * file. Provided method for implementing classes.
+	 * 
+	 * @param line
+	 *            The string to write to the output file
+	 * @throws IOException
+	 *             Thrown
+	 */
 	protected void writeln(String line) throws IOException {
 		bw.write(line);
 		bw.newLine();
@@ -54,5 +77,12 @@ public abstract class AbstractLogWriter implements ILogWriter {
 
 	}
 
+	/**
+	 * Processes all {@link LogEntry} in the given list and writes to the
+	 * writer's output file.
+	 * 
+	 * @param logLines
+	 *            The LogEntries to process
+	 */
 	protected abstract void writeLogEntries(List<LogEntry> logLines);
 }

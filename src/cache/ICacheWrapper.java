@@ -27,7 +27,7 @@ public interface ICacheWrapper {
 
 	/**
 	 * Checks to see if the given block ID is contained in the internal cache
-	 * representation. Differs from {@link #requestBlock()} in that it does not
+	 * representation. Differs from {@link #requestBlock(int)} in that it does not
 	 * elicit side effects, such as calling on cache steps or generating a
 	 * {@link LogEntry}.
 	 * 

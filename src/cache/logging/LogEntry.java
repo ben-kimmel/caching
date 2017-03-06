@@ -50,7 +50,7 @@ public class LogEntry {
 
 	/**
 	 * Returns the value of the given field. Often used in conjunction with
-	 * {@link #getFieldType()}.
+	 * {@link #getFieldType(String)}.
 	 * 
 	 * @param field
 	 *            The field requested
