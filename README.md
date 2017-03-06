@@ -9,7 +9,7 @@ Upcoming Features
   2. ~~Support for custom logging~~
   3. Additional unit tests
   4. Documentation
-    1. Javadocs
+    1. ~~Javadocs~~
     2. Usage and purpose
     3. General
   5. Code coverage information
