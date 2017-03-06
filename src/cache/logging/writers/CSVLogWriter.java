@@ -48,7 +48,6 @@ public class CSVLogWriter extends AbstractLogWriter {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	private String generateHeaders(LogEntry line) {
