@@ -6,8 +6,10 @@ import cache.ICacheWrapper;
 import cache.logging.writers.ILogWriter;
 
 /**
+ * Defines a structure for running repeated requests against a provided
+ * {@link ICacheWrapper} and producing logs.
  * 
- * @author kimmelbs
+ * @author Ben Kimmel
  *
  */
 public interface ITestRunner {

@@ -9,7 +9,7 @@ import cache.ICacheWrapper;
 import cache.logging.writers.CSVLogWriter;
 import cache.logging.writers.ILogWriter;
 import cache.rp.implementations.FIFOReplacementPolicy;
-import runner.enumerators.SequentialBlockAccessEnumerator;
+import runner.enumerators.SequentialSectorAccessEnumerator;
 
 public class ExampleDriver {
 
@@ -19,9 +19,9 @@ public class ExampleDriver {
 		setup();
 
 		for (ICacheWrapper cache : caches.keySet()) {
-			ITestRunner tr = new TestRunner();
+			ITestRunner tr = new DefaultTestRunner();
 			tr.provideCacheWrapper(cache);
-			tr.provideEnumerator(new SequentialBlockAccessEnumerator(0, 100000, 1000, 2));
+			tr.provideEnumerator(new SequentialSectorAccessEnumerator(0, 100000, 1000, 2));
 			tr.provideLogWriter(caches.get(cache));
 			tr.run(1000000);
 		}

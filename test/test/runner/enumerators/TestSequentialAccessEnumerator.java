@@ -7,7 +7,7 @@ import java.util.Enumeration;
 import org.junit.Before;
 import org.junit.Test;
 
-import runner.enumerators.SequentialBlockAccessEnumerator;
+import runner.enumerators.SequentialSectorAccessEnumerator;
 
 public class TestSequentialAccessEnumerator {
 	private Enumeration<Integer> e;
@@ -18,7 +18,7 @@ public class TestSequentialAccessEnumerator {
 
 	@Before
 	public void setUp() throws Exception {
-		this.e = new SequentialBlockAccessEnumerator(min, max, blockSize, blockAccessFactor);
+		this.e = new SequentialSectorAccessEnumerator(min, max, blockSize, blockAccessFactor);
 	}
 
 	@Test
