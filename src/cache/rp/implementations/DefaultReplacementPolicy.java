@@ -7,8 +7,24 @@ import cache.logging.DefaultLogEntryBuilder;
 import cache.logging.LogEntry;
 import cache.rp.IReplacementPolicy;
 
+/**
+ * The default implementation of {@link IReplacementPolicy}. No replacement
+ * occurs. Once all entries have been filled in the backing cache, it will no
+ * longer add new entries to the cache.
+ * 
+ * @author Ben Kimmel
+ *
+ */
 public class DefaultReplacementPolicy extends AbstractCacheStep implements IReplacementPolicy {
 
+	/**
+	 * Constructs a new DefaultReplacementPolicy with the given priority. The
+	 * lower the priority, the earlier it will execute.
+	 * 
+	 * @param priority
+	 *            The priority with which this should be executed. Lower is
+	 *            sooner
+	 */
 	public DefaultReplacementPolicy(int priority) {
 		super(priority);
 	}

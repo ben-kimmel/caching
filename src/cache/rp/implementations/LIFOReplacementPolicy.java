@@ -9,11 +9,34 @@ import cache.logging.DefaultLogEntryBuilder;
 import cache.logging.LogEntry;
 import cache.rp.IReplacementPolicy;
 
-public class LIFOCache extends AbstractCacheStep implements IReplacementPolicy {
+/**
+ * A Last-In-First-Out (LIFO) cache replacement policy. The most recently added
+ * entry will be evicted when a new request comes in, regardless of their last
+ * access time.
+ * <p>
+ * For example, if the cache has a maximum size of 3, and requests are issued as
+ * such:
+ * <p>
+ * <i>1, 2, 3, 1, 4</i>
+ * <p>
+ * When the request for <i>4</i> comes in, <i>3</i> will be evicted.
+ * 
+ * @author Ben Kimmel
+ *
+ */
+public class LIFOReplacementPolicy extends AbstractCacheStep implements IReplacementPolicy {
 
 	private Stack<Integer> s;
 
-	public LIFOCache(int priority) {
+	/**
+	 * Constructs a new LIFOReplacementPolicy with the given priority. The lower
+	 * the priority, the earlier it will execute.
+	 * 
+	 * @param priority
+	 *            The priority with which this should be executed. Lower is
+	 *            sooner
+	 */
+	public LIFOReplacementPolicy(int priority) {
 		super(priority);
 		this.s = new Stack<Integer>();
 	}

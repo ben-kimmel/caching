@@ -10,11 +10,34 @@ import cache.logging.DefaultLogEntryBuilder;
 import cache.logging.LogEntry;
 import cache.rp.IReplacementPolicy;
 
+/**
+ * A random cache replacement policy. A randomly selected entry will be evicted
+ * when a new request comes in.
+ * <p>
+ * For example, if the cache has a maximum size of 3, and requests are issued as
+ * such:
+ * <p>
+ * <i>1, 2, 3, 1, 4</i>
+ * <p>
+ * When the request for <i>4</i> comes in, either <i>1, 2,</i> or <i>3</i> will
+ * be evicted. Entries will be evicted in an even distribution.
+ * 
+ * @author Ben Kimmel
+ *
+ */
 public class RandomReplacementPolicy extends AbstractCacheStep implements IReplacementPolicy {
 
 	private Random r;
 	private ArrayList<Integer> index;
 
+	/**
+	 * Constructs a new RandomReplacementPolicy with the given priority. The
+	 * lower the priority, the earlier it will execute.
+	 * 
+	 * @param priority
+	 *            The priority with which this should be executed. Lower is
+	 *            sooner
+	 */
 	public RandomReplacementPolicy(int priority) {
 		super(priority);
 		this.r = new Random();
