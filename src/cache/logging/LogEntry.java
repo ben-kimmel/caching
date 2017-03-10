@@ -12,14 +12,12 @@ import java.util.Set;
  */
 public class LogEntry {
 
-	private Map<String, Class<? extends Object>> fieldTypes;
 	private Map<String, Object> fieldValues;
 
 	/**
 	 * Constructs a new LogEntry.
 	 */
 	public LogEntry() {
-		this.fieldTypes = new HashMap<String, Class<? extends Object>>();
 		this.fieldValues = new HashMap<String, Object>();
 	}
 
@@ -34,7 +32,6 @@ public class LogEntry {
 	 *            The value of the field
 	 */
 	public void addField(String field, Object value) {
-		this.fieldTypes.put(field, value.getClass());
 		this.fieldValues.put(field, value);
 	}
 
@@ -58,17 +55,6 @@ public class LogEntry {
 	 */
 	public Object getFieldValue(String field) {
 		return this.fieldValues.get(field);
-	}
-
-	/**
-	 * Returns the Class of the value contained by a field.
-	 * 
-	 * @param field
-	 *            The field requested
-	 * @return The Class of the value of the requested field
-	 */
-	public Class<? extends Object> getFieldType(String field) {
-		return this.fieldTypes.get(field);
 	}
 
 }

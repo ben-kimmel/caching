@@ -31,15 +31,15 @@ public class RegularSamplePreprocessor implements ILogPreprocessor {
 	 *            log.
 	 */
 	public RegularSamplePreprocessor(int samplingRate) {
-		if (samplingRate > 1) {
-			throw new IllegalArgumentException("Sampling rate must be between 0 and 1");
+		if (samplingRate < 1) {
+			throw new IllegalArgumentException("Sampling rate must be 1 or greater");
 		}
 		this.samplingRate = samplingRate;
 	}
 
 	@Override
 	public List<LogEntry> preprocess(List<LogEntry> logs) {
-		List<LogEntry> sample = new ArrayList<>();
+		List<LogEntry> sample = new ArrayList<>(logs.size() / this.samplingRate);
 		for (int i = 0; i < logs.size(); i += this.samplingRate) {
 			sample.add(logs.get(i));
 		}

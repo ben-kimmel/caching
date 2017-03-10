@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cache.ICacheWrapper;
+import cache.logging.LogEntry;
 import cache.logging.writers.ILogWriter;
 
 /**
@@ -39,9 +40,15 @@ public class DefaultTestRunner implements ITestRunner {
 		long duration = endTime - startTime;
 		this.testDuration = duration / 1000000;
 		System.out.println("Test Duration: " + this.testDuration);
+		List<LogEntry> log = cache.getLog();
+		startTime = System.nanoTime();
 		for (ILogWriter lw : this.logWriters) {
-			lw.writeLog(cache.getLog());
+			lw.writeLog(log);
 		}
+		endTime = System.nanoTime();
+		duration = endTime - startTime;
+		duration = duration / 1000000;
+		System.out.println("Log Writing Duration: " + duration);
 	}
 
 	@Override

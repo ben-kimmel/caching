@@ -2,7 +2,6 @@ package cache;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import cache.internal.ICacheInternal;
@@ -29,7 +28,7 @@ public abstract class AbstractCacheWrapper implements ICacheWrapper {
 	 */
 	public AbstractCacheWrapper() {
 		this.cacheSteps = new ArrayList<ICacheStep>();
-		this.logEntries = new LinkedList<LogEntry>();
+		this.logEntries = new ArrayList<LogEntry>();
 		this.stepsFinalized = false;
 	}
 

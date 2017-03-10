@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 import cache.logging.LogEntry;
+import cache.logging.preprocess.ILogPreprocessor;
 
 /**
  * An abstraction of the {@link ILogWriter} interface. AbstractLogWriter handles
@@ -19,6 +20,7 @@ public abstract class AbstractLogWriter implements ILogWriter {
 
 	private BufferedWriter bw;
 	private File outputFile;
+	private ILogPreprocessor preprocessor;
 
 	/**
 	 * Initializes an AbstractLogWriter with the given {@link File} as the
@@ -34,6 +36,11 @@ public abstract class AbstractLogWriter implements ILogWriter {
 	@Override
 	public void setOutputFile(File outputFile) {
 		this.outputFile = outputFile;
+	}
+
+	@Override
+	public void provideLogPreprocessor(ILogPreprocessor preprocessor) {
+		this.preprocessor = preprocessor;
 	}
 
 	private void setupWriter(File outputFile) throws IOException {
@@ -68,7 +75,11 @@ public abstract class AbstractLogWriter implements ILogWriter {
 	public void writeLog(List<LogEntry> logLines) {
 		try {
 			setupWriter(outputFile);
-			writeLogEntries(logLines);
+			if (this.preprocessor != null) {
+				writeLogEntries(this.preprocessor.preprocess(logLines));
+			} else {
+				writeLogEntries(logLines);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
