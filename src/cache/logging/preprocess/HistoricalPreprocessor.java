@@ -11,9 +11,14 @@ import cache.logging.LogEntry;
 public class HistoricalPreprocessor implements ILogPreprocessor {
 
 	private Map<String, Integer> fieldAccumulations;
+	private String[] fieldIgnoreList;
 
 	public HistoricalPreprocessor() {
 		this.fieldAccumulations = new HashMap<String, Integer>();
+		for (HitStatus hs : HitStatus.values()) {
+			this.fieldAccumulations.put(hs.name(), 0);
+		}
+		this.fieldIgnoreList = new String[] { "Request", "Block ID" };
 	}
 
 	@Override
@@ -35,6 +40,11 @@ public class HistoricalPreprocessor implements ILogPreprocessor {
 
 	private void processLine(LogEntry line) {
 		for (String field : line.getFieldList()) {
+			for (String s : fieldIgnoreList) {
+				if (s.equals(field)) {
+					continue;
+				}
+			}
 			Object v = line.getFieldValue(field);
 			if (v instanceof Integer) {
 				Integer curVal = this.fieldAccumulations.get(field);
@@ -53,9 +63,14 @@ public class HistoricalPreprocessor implements ILogPreprocessor {
 						curVal++;
 						this.fieldAccumulations.put(field, curVal);
 					}
+				} else {
+					Integer curVal = (Integer) this.fieldAccumulations.get(field);
+					if (curVal == null) {
+						this.fieldAccumulations.put(field, 0);
+					}
 				}
 			} else if (v instanceof HitStatus) {
-				String fieldString = field + " - " + ((HitStatus) v).name();
+				String fieldString = ((HitStatus) v).name();
 				Integer curVal = (Integer) this.fieldAccumulations.get(fieldString);
 				if (curVal == null) {
 					this.fieldAccumulations.put(fieldString, 1);

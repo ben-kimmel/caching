@@ -27,6 +27,7 @@ public class CSVLogWriter extends AbstractLogWriter {
 	private String generateCSVEntry(LogEntry line) {
 		StringBuilder sb = new StringBuilder();
 		for (String header : line.getFieldList()) {
+			//System.out.println("adding " + line.getFieldValue(header) + " as " + header);
 			sb.append(line.getFieldValue(header));
 			sb.append(",");
 		}

@@ -56,6 +56,7 @@ public class LRUReplacementPolicy extends AbstractCacheStep implements IReplacem
 				int oldest = this.q.poll();
 				cache.removeFromCache(oldest);
 				try {
+					this.q.add(blockID);
 					cache.addToCache(blockID);
 				} catch (CacheFullException e) {
 					e.printStackTrace();
