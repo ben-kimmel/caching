@@ -45,4 +45,9 @@ public class RandomSamplePreprocessor implements ILogPreprocessor {
 		return sample;
 	}
 
+	@Override
+	public String getName() {
+		return "RandomSamplePreprocessor";
+	}
+
 }

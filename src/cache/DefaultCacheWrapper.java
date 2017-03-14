@@ -61,4 +61,5 @@ public class DefaultCacheWrapper extends AbstractCacheWrapper {
 			super.provideCacheStep(new DefaultReplacementPolicy(1));
 		}
 	}
+
 }

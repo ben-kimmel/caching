@@ -39,7 +39,7 @@ public class RandomReplacementPolicy extends AbstractCacheStep implements IRepla
 	 *            sooner
 	 */
 	public RandomReplacementPolicy(int priority) {
-		super(priority);
+		super(priority, "RandomReplacementPolicy");
 		this.r = new Random();
 		this.index = new ArrayList<Integer>();
 	}

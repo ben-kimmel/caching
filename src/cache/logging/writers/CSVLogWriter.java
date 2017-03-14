@@ -19,15 +19,20 @@ public class CSVLogWriter extends AbstractLogWriter {
 	 * 
 	 * @param outputFile
 	 *            The File specifying where the output should be written
+	 * 
+	 * @param filename
+	 *            the name of the output file
 	 */
-	public CSVLogWriter(File outputFile) {
-		super(outputFile);
+	public CSVLogWriter(File outputFile, String filename) {
+		super(outputFile, filename, "CSVLogWriter");
+		super.fileExtension = ".csv";
 	}
 
 	private String generateCSVEntry(LogEntry line) {
 		StringBuilder sb = new StringBuilder();
 		for (String header : line.getFieldList()) {
-			//System.out.println("adding " + line.getFieldValue(header) + " as " + header);
+			// System.out.println("adding " + line.getFieldValue(header) + " as
+			// " + header);
 			sb.append(line.getFieldValue(header));
 			sb.append(",");
 		}

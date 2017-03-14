@@ -19,8 +19,11 @@ import cache.logging.preprocess.ILogPreprocessor;
 public abstract class AbstractLogWriter implements ILogWriter {
 
 	private BufferedWriter bw;
-	private File outputFile;
+	private File outputDir;
 	private ILogPreprocessor preprocessor;
+	private String filename;
+	private String name;
+	protected String fileExtension = ".txt";
 
 	/**
 	 * Initializes an AbstractLogWriter with the given {@link File} as the
@@ -29,21 +32,35 @@ public abstract class AbstractLogWriter implements ILogWriter {
 	 * @param outputFile
 	 *            The File specifying where the output should be written
 	 */
-	public AbstractLogWriter(File outputFile) {
-		this.setOutputFile(outputFile);
+	public AbstractLogWriter(File outputFile, String filename, String logName) {
+		this.setOutputDirectory(outputFile);
+		this.setOutputFilename(filename);
+		this.name = logName;
 	}
 
 	@Override
-	public void setOutputFile(File outputFile) {
-		this.outputFile = outputFile;
+	public void setOutputFilename(String filename) {
+		this.filename = filename;
+	}
+
+	@Override
+	public void setOutputDirectory(File outputDirectory) {
+		this.outputDir = outputDirectory;
 	}
 
 	@Override
 	public void provideLogPreprocessor(ILogPreprocessor preprocessor) {
 		this.preprocessor = preprocessor;
+		this.name = this.name + this.preprocessor.getName();
 	}
 
-	private void setupWriter(File outputFile) throws IOException {
+	@Override
+	public String getName() {
+		return this.name + this.fileExtension;
+	}
+
+	private void setupWriter() throws IOException {
+		File outputFile = new File(this.outputDir, this.filename);
 		this.bw = new BufferedWriter(new FileWriter(outputFile));
 	}
 
@@ -74,7 +91,7 @@ public abstract class AbstractLogWriter implements ILogWriter {
 	@Override
 	public void writeLog(List<LogEntry> logLines) {
 		try {
-			setupWriter(outputFile);
+			setupWriter();
 			if (this.preprocessor != null) {
 				writeLogEntries(this.preprocessor.preprocess(logLines));
 			} else {

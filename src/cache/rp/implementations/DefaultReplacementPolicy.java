@@ -26,7 +26,7 @@ public class DefaultReplacementPolicy extends AbstractCacheStep implements IRepl
 	 *            sooner
 	 */
 	public DefaultReplacementPolicy(int priority) {
-		super(priority);
+		super(priority, "DefaultReplacementPolicy");
 	}
 
 	@Override

@@ -24,4 +24,11 @@ public interface ILogPreprocessor {
 	 */
 	public List<LogEntry> preprocess(List<LogEntry> logs);
 
+	/**
+	 * Returns the name of this preprocessor.
+	 * 
+	 * @return The name of this preprocessor
+	 */
+	public String getName();
+
 }

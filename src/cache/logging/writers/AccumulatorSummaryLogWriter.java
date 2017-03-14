@@ -26,14 +26,24 @@ public class AccumulatorSummaryLogWriter extends AbstractLogWriter {
 	 * 
 	 * @param outputFile
 	 *            The File specifying where the output should be written
+	 * @param filename
+	 *            The name of the output file
 	 */
-	public AccumulatorSummaryLogWriter(File outputFile) {
-		super(outputFile);
+	public AccumulatorSummaryLogWriter(File outputFile, String filename) {
+		super(outputFile, filename, "Accumulator");
+		reset();
+	}
+
+	private void reset() {
 		this.fieldAccumulations = new HashMap<String, Number>();
+		for (HitStatus hs : HitStatus.values()) {
+			this.fieldAccumulations.put(hs.name(), 0);
+		}
 	}
 
 	@Override
 	protected void writeLogEntries(List<LogEntry> logLines) {
+		reset();
 		for (LogEntry line : logLines) {
 			processLine(line);
 		}
@@ -53,24 +63,12 @@ public class AccumulatorSummaryLogWriter extends AbstractLogWriter {
 	private void processLine(LogEntry line) {
 		for (String field : line.getFieldList()) {
 			Object v = line.getFieldValue(field);
-			if (v instanceof Number) {
-				Number curVal = this.fieldAccumulations.get(field);
+			if (v instanceof Integer) {
+				Integer curVal = (Integer) this.fieldAccumulations.get(field);
 				if (curVal == null) {
-					this.fieldAccumulations.put(field, (Number) v);
+					this.fieldAccumulations.put(field, (Integer) v);
 				} else {
-					if (curVal instanceof Integer) {
-						curVal = (Integer) curVal + (Integer) v;
-					} else if (curVal instanceof Double) {
-						curVal = (Double) curVal + (Double) v;
-					} else if (curVal instanceof Float) {
-						curVal = (Float) curVal + (Float) v;
-					} else if (curVal instanceof Long) {
-						curVal = (Long) curVal + (Long) v;
-					} else if (curVal instanceof Short) {
-						curVal = (Short) curVal + (Short) v;
-					} else if (curVal instanceof Byte) {
-						curVal = (Byte) curVal + (Byte) v;
-					}
+					curVal = curVal + (Integer) v;
 					this.fieldAccumulations.put(field, curVal);
 				}
 			} else if (v instanceof Boolean) {
@@ -82,9 +80,14 @@ public class AccumulatorSummaryLogWriter extends AbstractLogWriter {
 						curVal++;
 						this.fieldAccumulations.put(field, curVal);
 					}
+				} else {
+					Integer curVal = (Integer) this.fieldAccumulations.get(field);
+					if (curVal == null) {
+						this.fieldAccumulations.put(field, 0);
+					}
 				}
 			} else if (v instanceof HitStatus) {
-				String fieldString = field + " - " + ((HitStatus) v).name();
+				String fieldString = ((HitStatus) v).name();
 				Integer curVal = (Integer) this.fieldAccumulations.get(fieldString);
 				if (curVal == null) {
 					this.fieldAccumulations.put(fieldString, 1);

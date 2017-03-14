@@ -45,4 +45,9 @@ public class RegularSamplePreprocessor implements ILogPreprocessor {
 		}
 		return sample;
 	}
+
+	@Override
+	public String getName() {
+		return "RegularSamplePreprocessor";
+	}
 }

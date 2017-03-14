@@ -88,4 +88,9 @@ public class SequentialSectorAccessEnumerator implements Enumeration<Integer> {
 
 	}
 
+	@Override
+	public String toString() {
+		return "SequentialSector";
+	}
+
 }

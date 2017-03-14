@@ -36,7 +36,7 @@ public class MRUReplacementPolicy extends AbstractCacheStep implements IReplacem
 	 *            sooner
 	 */
 	public MRUReplacementPolicy(int priority) {
-		super(priority);
+		super(priority, "MRUReplacementPolicy");
 	}
 
 	@Override

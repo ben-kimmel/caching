@@ -60,8 +60,8 @@ public abstract class AbstractCacheInternal implements ICacheInternal {
 	}
 
 	@Override
-	public void removeFromCache(int blockID) {
-		this.currentEntries.remove(blockID);
+	public boolean removeFromCache(int blockID) {
+		return this.currentEntries.remove(blockID);
 	}
 
 	@Override
@@ -69,6 +69,10 @@ public abstract class AbstractCacheInternal implements ICacheInternal {
 		boolean seen = this.requestedEntries.contains(blockID);
 		this.requestedEntries.add(blockID);
 		return seen;
+	}
+
+	public int getFill() {
+		return this.currentEntries.size();
 	}
 
 }

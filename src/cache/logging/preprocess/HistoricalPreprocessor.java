@@ -14,15 +14,20 @@ public class HistoricalPreprocessor implements ILogPreprocessor {
 	private String[] fieldIgnoreList;
 
 	public HistoricalPreprocessor() {
+		reset();
+		this.fieldIgnoreList = new String[] { "Request", "Block ID" };
+	}
+
+	private void reset() {
 		this.fieldAccumulations = new HashMap<String, Integer>();
 		for (HitStatus hs : HitStatus.values()) {
 			this.fieldAccumulations.put(hs.name(), 0);
 		}
-		this.fieldIgnoreList = new String[] { "Request", "Block ID" };
 	}
 
 	@Override
 	public List<LogEntry> preprocess(List<LogEntry> logs) {
+		reset();
 		List<LogEntry> historyLog = new ArrayList<LogEntry>();
 		int lineNum = 0;
 		for (LogEntry line : logs) {
@@ -80,6 +85,11 @@ public class HistoricalPreprocessor implements ILogPreprocessor {
 				}
 			}
 		}
+	}
+
+	@Override
+	public String getName() {
+		return "HistoricalPreprocessor";
 	}
 
 }

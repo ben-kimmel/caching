@@ -21,7 +21,7 @@ public class DefaultPrefetchingPolicy extends AbstractCacheStep implements IPref
 	 *            he priority of the AbstractCacheStep. Lower is sooner
 	 */
 	public DefaultPrefetchingPolicy(int priority) {
-		super(priority);
+		super(priority, "DefaultPrefetchingPolicy");
 	}
 
 	@Override

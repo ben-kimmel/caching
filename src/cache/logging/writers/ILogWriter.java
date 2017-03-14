@@ -17,22 +17,30 @@ import cache.logging.preprocess.ILogPreprocessor;
 public interface ILogWriter {
 
 	/**
+	 * Tells the ILogWriter the name of the file to write out.
+	 * 
+	 * @param filename
+	 *            The name of the output file
+	 */
+	public void setOutputFilename(String filename);
+
+	/**
 	 * Tells the ILogWriter where to write the output of its processing.
 	 * 
-	 * @param outputFile
+	 * @param outputDirectory
 	 *            The File specifying where the output should be written
 	 */
-	public void setOutputFile(File outputFile);
+	public void setOutputDirectory(File outputDirectory);
 
 	/**
 	 * Processes and writes an output the the {@link File} specified in
-	 * {@link #setOutputFile(File)}.
+	 * {@link #setOutputDirectory(File)}.
 	 * 
 	 * @param logLines
 	 *            The list of {@link LogEntry} that is to be processed
 	 */
 	public void writeLog(List<LogEntry> logLines);
-	
+
 	/**
 	 * Sets the log preprocessor to be called before logs are handed to the
 	 * {@link #writeLog(List)}. This method is optional.
@@ -41,5 +49,12 @@ public interface ILogWriter {
 	 *            The writer with which to produce log files.
 	 */
 	public void provideLogPreprocessor(ILogPreprocessor preprocessor);
+
+	/**
+	 * Returns the name of the log writer.
+	 * 
+	 * @return The name of the log writer
+	 */
+	public String getName();
 
 }

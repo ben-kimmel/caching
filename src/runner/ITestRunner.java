@@ -25,7 +25,7 @@ public interface ITestRunner {
 	public void run(int iterations);
 
 	/**
-	 * Sets the cache wrapper that the requests will be run against. Must be
+	 * Adds a cache wrapper that the requests will be run against. Must be
 	 * called before tests can be run.
 	 * 
 	 * @param cache

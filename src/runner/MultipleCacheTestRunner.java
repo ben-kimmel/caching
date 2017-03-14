@@ -1,5 +1,6 @@
 package runner;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,19 +16,19 @@ import cache.logging.writers.ILogWriter;
  * @author Ben Kimmel
  *
  */
-public class DefaultTestRunner implements ITestRunner {
+public class MultipleCacheTestRunner implements ITestRunner {
 
 	private Enumeration<? extends Integer> requestGenerator;
 	private List<ILogWriter> logWriters;
-	private ICacheWrapper cache;
+	private List<ICacheWrapper> caches;
 	private long testDuration;
 
 	/**
 	 * Constructs a new DefaultTestRunner.
 	 */
-	public DefaultTestRunner() {
+	public MultipleCacheTestRunner() {
 		this.requestGenerator = null;
-		this.cache = null;
+		this.caches = new ArrayList<ICacheWrapper>();
 		this.logWriters = new LinkedList<>();
 	}
 
@@ -35,17 +36,24 @@ public class DefaultTestRunner implements ITestRunner {
 	public void run(int iterations) {
 		long startTime = System.nanoTime();
 		for (int i = 0; i < iterations; i++) {
-			this.cache.requestBlock(this.requestGenerator.nextElement());
+			int req = this.requestGenerator.nextElement();
+			for (ICacheWrapper cw : this.caches) {
+				cw.requestBlock(req);
+			}
 		}
 		long endTime = System.nanoTime();
 		long duration = endTime - startTime;
 		this.testDuration = duration / 1000000;
 		System.out.println("Test Duration: " + this.testDuration);
-		List<LogEntry> log = cache.getLog();
-		startTime = System.nanoTime();
-		for (ILogWriter lw : this.logWriters) {
-			lw.writeLog(log);
+		for (ICacheWrapper cw : this.caches) {
+			List<LogEntry> log = cw.getLog();
+			startTime = System.nanoTime();
+			for (ILogWriter lw : this.logWriters) {
+				lw.setOutputFilename(cw.getName() + this.requestGenerator.toString() + lw.getName());
+				lw.writeLog(log);
+			}
 		}
+
 		endTime = System.nanoTime();
 		duration = endTime - startTime;
 		duration = duration / 1000000;
@@ -54,7 +62,7 @@ public class DefaultTestRunner implements ITestRunner {
 
 	@Override
 	public void provideCacheWrapper(ICacheWrapper cache) {
-		this.cache = cache;
+		this.caches.add(cache);
 	}
 
 	@Override

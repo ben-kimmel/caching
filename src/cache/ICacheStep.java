@@ -13,9 +13,9 @@ import cache.logging.LogEntry;
 public interface ICacheStep extends Comparable<ICacheStep> {
 
 	/**
-	 * Modifies the provided {@link ICacheInternal} based on the
-	 * provided block ID. Returns a {@link LogEntry} that reflects
-	 * the actions taken during the execution and any additional information.
+	 * Modifies the provided {@link ICacheInternal} based on the provided block
+	 * ID. Returns a {@link LogEntry} that reflects the actions taken during the
+	 * execution and any additional information.
 	 * 
 	 * @param blockID
 	 *            The requested block ID that should be used to modify the
@@ -48,5 +48,12 @@ public interface ICacheStep extends Comparable<ICacheStep> {
 	 * @return The priority of this ICacheStep
 	 */
 	public int getPriority();
+
+	/**
+	 * Returns the name of the cache step.
+	 * 
+	 * @return The name of the cache step
+	 */
+	public String getName();
 
 }

@@ -37,7 +37,7 @@ public class LIFOReplacementPolicy extends AbstractCacheStep implements IReplace
 	 *            sooner
 	 */
 	public LIFOReplacementPolicy(int priority) {
-		super(priority);
+		super(priority, "LIFOReplacementPolicy");
 		this.s = new Stack<Integer>();
 	}
 

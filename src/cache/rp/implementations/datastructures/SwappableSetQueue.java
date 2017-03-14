@@ -28,8 +28,12 @@ public class SwappableSetQueue<E> implements Queue<E>, Set<E> {
 		if (toMove != null) {
 			Node previous = toMove.getPreviousNode();
 			Node next = toMove.getNextNode();
-			next.setPreviousNode(previous);
-			previous.setNextNode(next);
+			if (next != null) {
+				next.setPreviousNode(previous);
+			}
+			if (previous != null) {
+				previous.setNextNode(next);
+			}
 			this.nodeIndex.remove(value);
 			this.add(value);
 		}

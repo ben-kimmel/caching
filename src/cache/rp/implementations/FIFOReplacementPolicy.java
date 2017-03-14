@@ -39,7 +39,7 @@ public class FIFOReplacementPolicy extends AbstractCacheStep implements IReplace
 	 *            sooner
 	 */
 	public FIFOReplacementPolicy(int priority) {
-		super(priority);
+		super(priority, "FIFOReplacementPolicy");
 		this.ageQueue = new LinkedList<Integer>();
 	}
 

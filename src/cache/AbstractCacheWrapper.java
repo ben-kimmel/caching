@@ -86,4 +86,12 @@ public abstract class AbstractCacheWrapper implements ICacheWrapper {
 		return logEntries;
 	}
 
+	public String getName() {
+		StringBuilder sb = new StringBuilder();
+		for (ICacheStep cs : this.cacheSteps) {
+			sb.append(cs.getName());
+		}
+		return sb.toString();
+	}
+
 }

@@ -36,7 +36,7 @@ public class LRUReplacementPolicy extends AbstractCacheStep implements IReplacem
 	 *            sooner
 	 */
 	public LRUReplacementPolicy(int priority) {
-		super(priority);
+		super(priority, "LRUReplacementPolicy");
 		this.q = new SwappableSetQueue<Integer>();
 	}
 
@@ -45,25 +45,29 @@ public class LRUReplacementPolicy extends AbstractCacheStep implements IReplacem
 		DefaultLogEntryBuilder lb = new DefaultLogEntryBuilder(le);
 		if (!cache.contains(blockID)) {
 			if (!cache.isFull()) {
-				this.q.add(blockID);
 				try {
 					cache.addToCache(blockID);
+					this.q.add(blockID);
 				} catch (CacheFullException e) {
 					e.printStackTrace();
 				}
 				lb.addForcedEviction(false).addForcedInsertion(true);
 			} else {
 				int oldest = this.q.poll();
+				if (!cache.contains(oldest)) {
+					blockID = blockID + 0;
+				}
 				cache.removeFromCache(oldest);
 				try {
-					this.q.add(blockID);
 					cache.addToCache(blockID);
+					this.q.add(blockID);
 				} catch (CacheFullException e) {
 					e.printStackTrace();
 				}
 				lb.addForcedEviction(true).addForcedInsertion(true);
 			}
 		} else {
+			this.q.moveToHead(blockID);
 			lb.addForcedEviction(false).addForcedInsertion(false);
 		}
 		return lb.build();

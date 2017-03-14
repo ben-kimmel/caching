@@ -5,7 +5,7 @@ import java.util.PrimitiveIterator;
 import java.util.Random;
 
 /**
- * Generates well distributed random block IDs for requests. 
+ * Generates well distributed random block IDs for requests.
  * 
  * @author Ben Kimmel
  *
@@ -46,6 +46,11 @@ public class DistributedRandomAccessEnumerator implements Enumeration<Integer> {
 	@Override
 	public Integer nextElement() {
 		return this.r.next();
+	}
+
+	@Override
+	public String toString() {
+		return "DistributedRandom";
 	}
 
 }

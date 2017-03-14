@@ -48,5 +48,7 @@ public interface ICacheInternal {
 	 * @param blockID
 	 *            The block ID to remove
 	 */
-	public void removeFromCache(int blockID);
+	public boolean removeFromCache(int blockID);
+
+	public int getFill();
 }

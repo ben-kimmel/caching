@@ -10,6 +10,7 @@ package cache;
 public abstract class AbstractCacheStep implements ICacheStep {
 
 	int priority;
+	String name;
 
 	/**
 	 * Initializes an AbstractCacheStep with the given priority. The lower the
@@ -18,8 +19,9 @@ public abstract class AbstractCacheStep implements ICacheStep {
 	 * @param priority
 	 *            The priority of the AbstractCacheStep. Lower is sooner
 	 */
-	public AbstractCacheStep(int priority) {
+	public AbstractCacheStep(int priority, String name) {
 		this.setPriority(priority);
+		this.name = name;
 	}
 
 	@Override
@@ -41,6 +43,11 @@ public abstract class AbstractCacheStep implements ICacheStep {
 	@Override
 	public int getPriority() {
 		return this.priority;
+	}
+
+	@Override
+	public String getName() {
+		return this.name;
 	}
 
 }
