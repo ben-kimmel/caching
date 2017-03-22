@@ -18,14 +18,16 @@ import cache.rp.IReplacementPolicy;
  * <p>
  * When the request for <i>4</i> comes in, <i>1</i> will be evicted. If a
  * request for <i>5</i> then came in, <i>4</i> would be evicted. In practice,
- * this is very similar to the {@link FIFOReplacementPolicy}.
+ * this is very similar to the {@link LIFOReplacementPolicy}.
  * 
  * @author Ben Kimmel
  *
  */
+//TODO: update to properly implement
 public class MRUReplacementPolicy extends AbstractCacheStep implements IReplacementPolicy {
 
 	private int mostRecentBlockID;
+	private int previousMostRecentBlockID;
 
 	/**
 	 * Constructs a new MRUReplacementPolicy with the given priority. The lower
@@ -44,6 +46,7 @@ public class MRUReplacementPolicy extends AbstractCacheStep implements IReplacem
 		DefaultLogEntryBuilder lb = new DefaultLogEntryBuilder(le);
 		if (!cache.contains(blockID)) {
 			if (!cache.isFull()) {
+				this.previousMostRecentBlockID = this.mostRecentBlockID;
 				this.mostRecentBlockID = blockID;
 				try {
 					cache.addToCache(blockID);
@@ -58,7 +61,8 @@ public class MRUReplacementPolicy extends AbstractCacheStep implements IReplacem
 				} catch (CacheFullException e) {
 					e.printStackTrace();
 				}
-				this.mostRecentBlockID = blockID;
+				this.mostRecentBlockID = previousMostRecentBlockID;
+				this.previousMostRecentBlockID = blockID;
 				lb.addForcedEviction(true).addForcedInsertion(true);
 			}
 		} else {

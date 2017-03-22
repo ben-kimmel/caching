@@ -71,8 +71,9 @@ public abstract class AbstractCacheInternal implements ICacheInternal {
 		return seen;
 	}
 
-	public int getFill() {
-		return this.currentEntries.size();
+	@Override
+	public Collection<Integer> cacheRepr() {
+		return this.currentEntries;
 	}
 
 }

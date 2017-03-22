@@ -11,7 +11,9 @@ import java.util.Set;
 
 public class SwappableSetQueue<E> implements Queue<E>, Set<E> {
 
+	// the newest element
 	private Node head;
+	// the oldest element
 	private Node tail;
 	private Map<E, Node> nodeIndex;
 
@@ -24,19 +26,12 @@ public class SwappableSetQueue<E> implements Queue<E>, Set<E> {
 	}
 
 	public void moveToHead(E value) {
-		Node toMove = this.nodeIndex.get(value);
-		if (toMove != null) {
-			Node previous = toMove.getPreviousNode();
-			Node next = toMove.getNextNode();
-			if (next != null) {
-				next.setPreviousNode(previous);
-			}
-			if (previous != null) {
-				previous.setNextNode(next);
-			}
-			this.nodeIndex.remove(value);
-			this.add(value);
+		if (!this.contains(value)) {
+			System.out.println("Cannot move " + value + " to head as it is not a node.");
+			return;
 		}
+		this.remove(value);
+		this.add(value);
 	}
 
 	public ArrayList<E> toArrayList() {
@@ -126,8 +121,16 @@ public class SwappableSetQueue<E> implements Queue<E>, Set<E> {
 		}
 		Node before = toRemove.getPreviousNode();
 		Node after = toRemove.getNextNode();
-		before.setNextNode(after);
-		after.setPreviousNode(before);
+		if (before == null) {
+			this.head = after;
+		} else {
+			before.setNextNode(after);
+		}
+		if (after == null) {
+			this.tail = before;
+		} else {
+			after.setPreviousNode(before);
+		}
 		return true;
 	}
 
@@ -168,6 +171,7 @@ public class SwappableSetQueue<E> implements Queue<E>, Set<E> {
 	@Override
 	public boolean add(E value) {
 		if (this.contains(value)) {
+			System.out.println("Refused duplicate");
 			return false;
 		}
 		Node newNode = new Node();
@@ -195,8 +199,7 @@ public class SwappableSetQueue<E> implements Queue<E>, Set<E> {
 
 	@Override
 	public boolean offer(E arg0) {
-		this.add(arg0);
-		return true;
+		return this.add(arg0);
 	}
 
 	@Override

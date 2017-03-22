@@ -12,6 +12,7 @@ import cache.logging.writers.CSVLogWriter;
 import cache.logging.writers.ILogWriter;
 import cache.rp.IReplacementPolicy;
 import cache.rp.implementations.DefaultReplacementPolicy;
+import cache.rp.implementations.DualStackReplacementPolicy;
 import cache.rp.implementations.FIFOReplacementPolicy;
 import cache.rp.implementations.LIFOReplacementPolicy;
 import cache.rp.implementations.LRUReplacementPolicy;
@@ -48,6 +49,7 @@ public class MultiCacheDriver {
 		caches.add(buildCacheWrapper(new MRUReplacementPolicy(0)));
 		caches.add(buildCacheWrapper(new RandomReplacementPolicy(0)));
 		caches.add(buildCacheWrapper(new DefaultReplacementPolicy(0)));
+		caches.add(buildCacheWrapper(new DualStackReplacementPolicy(0)));
 	}
 
 	private static ICacheWrapper buildCacheWrapper(IReplacementPolicy rp) {

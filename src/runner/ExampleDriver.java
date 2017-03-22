@@ -10,7 +10,7 @@ import cache.logging.preprocess.HistoricalPreprocessor;
 import cache.logging.writers.AccumulatorSummaryLogWriter;
 import cache.logging.writers.CSVLogWriter;
 import cache.logging.writers.ILogWriter;
-import cache.rp.implementations.LIFOReplacementPolicy;
+import cache.rp.implementations.LRUReplacementPolicy;
 import runner.enumerators.SequentialSectorAccessEnumerator;
 
 public class ExampleDriver {
@@ -41,8 +41,8 @@ public class ExampleDriver {
 	}
 
 	private static ICacheWrapper buildCacheWrapper() {
-		ICacheWrapper wrapper = new DefaultCacheWrapper(100, false);
-		wrapper.provideCacheStep(new LIFOReplacementPolicy(0));
+		ICacheWrapper wrapper = new DefaultCacheWrapper(10, false);
+		wrapper.provideCacheStep(new LRUReplacementPolicy(0));
 		return wrapper;
 	}
 

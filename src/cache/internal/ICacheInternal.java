@@ -1,5 +1,7 @@
 package cache.internal;
 
+import java.util.Collection;
+
 /**
  * @author Ben Kimmel
  *
@@ -50,5 +52,5 @@ public interface ICacheInternal {
 	 */
 	public boolean removeFromCache(int blockID);
 
-	public int getFill();
+	public Collection<Integer> cacheRepr();
 }

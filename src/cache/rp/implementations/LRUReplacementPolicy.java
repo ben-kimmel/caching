@@ -54,15 +54,13 @@ public class LRUReplacementPolicy extends AbstractCacheStep implements IReplacem
 				lb.addForcedEviction(false).addForcedInsertion(true);
 			} else {
 				int oldest = this.q.poll();
-				if (!cache.contains(oldest)) {
-					blockID = blockID + 0;
-				}
 				cache.removeFromCache(oldest);
 				try {
 					cache.addToCache(blockID);
 					this.q.add(blockID);
 				} catch (CacheFullException e) {
-					e.printStackTrace();
+
+					System.exit(0);
 				}
 				lb.addForcedEviction(true).addForcedInsertion(true);
 			}

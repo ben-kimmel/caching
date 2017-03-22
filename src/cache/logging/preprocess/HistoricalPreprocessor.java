@@ -46,7 +46,7 @@ public class HistoricalPreprocessor implements ILogPreprocessor {
 	private void processLine(LogEntry line) {
 		for (String field : line.getFieldList()) {
 			for (String s : fieldIgnoreList) {
-				if (s.equals(field)) {
+				if (s.equalsIgnoreCase(field.trim())) {
 					continue;
 				}
 			}
